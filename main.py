@@ -1,6 +1,6 @@
-import flet
 from flet import *
 from flet_route import *
+
 from views.login import Login
 from views.registro import Registro
 
@@ -17,8 +17,6 @@ def main(page: Page):
     }
     page.theme = Theme(font_family="Poppins")
 
-    page.update()
-
     app_routes = [
         path('/', clear=True, view=Login),
         path('/registro', clear=True, view=Registro),
@@ -28,4 +26,4 @@ def main(page: Page):
     page.go(page.route)
 
 
-flet.app(target=main)
+app(target=main)

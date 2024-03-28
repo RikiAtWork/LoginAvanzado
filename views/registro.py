@@ -189,6 +189,7 @@ def Registro(page: Page, params: Params, basket: Basket):
     )
 
     page.title = "Registrarse"
+    page.theme = Theme(color_scheme_seed="blue")
     print("Ruta login:", page.route)
 
     return View(

@@ -7,6 +7,7 @@ class Colors:
     RED_600 = "#E53935"
     BLUE_LIGHT = "#428aed"
     BLUE_DARK = "#7961ed"
+    DARK_BLUE = "#0024ed"
     GRAY_LIGHT = "#f0f2fc"
 
 class Styles:
@@ -15,10 +16,8 @@ class Styles:
     BUTTON_COLOR = Colors.BLACK
 
 def Login(page: Page, params: Params, basket: Basket):
-# Define constantes para colores y estilos
 
 
-    # Función para crear un contenedor de texto
     def text_container(text, size=60, weight=FontWeight.W_900, margin_top=0, margin_bottom=0):
         return Container(
             width=170,
@@ -32,7 +31,6 @@ def Login(page: Page, params: Params, basket: Basket):
                         )
         )
 
-    # Función para crear un contenedor de botón de texto
     def text_button_container(text, on_click):
         return Container(
             content=TextButton(
@@ -42,15 +40,14 @@ def Login(page: Page, params: Params, basket: Basket):
             )
         )
 
-    # Calcula el ancho de un elemento como un porcentaje del ancho de la ventana
     def calculate_width(percentage):
         return page.window_width * percentage
 
-    # Contenedor de login mejorado
     login = Container(
         width=page.window_width,
         height=page.window_height,
         margin=0,
+        padding=0,
         gradient=LinearGradient(
             begin=alignment.top_center,
             end=alignment.bottom_center,
@@ -70,10 +67,11 @@ def Login(page: Page, params: Params, basket: Basket):
                             margin=margin.only(bottom=10),
                             content=TextField(
                                 width=calculate_width(0.7),
-                                label_style=TextStyle(color=Colors.WHITE, size=Styles.TEXT_SIZE),
-                                hint_style=TextStyle(color=Colors.WHITE, size=Styles.TEXT_SIZE),
+                                label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL),
+                                hint_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL),
                                 label="Usuario",
                                 hint_text='DNI / NIF / Pasaporte',
+                                color= Colors.WHITE,
                                 height=50,
                                 border_color=Colors.WHITE,
                                 border_radius=10,
@@ -88,11 +86,12 @@ def Login(page: Page, params: Params, basket: Basket):
                         Container(
                             content=TextField(
                                 width=calculate_width(0.7),
-                                label_style=TextStyle(color=Colors.WHITE, size=Styles.TEXT_SIZE),
+                                label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL),
                                 label="Contraseña",
                                 height=50,
                                 border_color=Colors.WHITE,
                                 border_radius=10,
+                                color=Colors.WHITE,
                                 prefix_icon=icons.LOCK,
                                 password=True,
                                 can_reveal_password=True
@@ -136,8 +135,8 @@ def Login(page: Page, params: Params, basket: Basket):
             ],
         )
     )
-
     page.title = "Iniciar sesión"
+    page.theme = Theme(color_scheme_seed="blue")
     print("Ruta login:", page.route)
 
     return View(
