@@ -12,6 +12,8 @@ def main(page: Page):
     page.window_height = 844
     page.window_max_width = 390
     page.window_max_height = 844
+    page.window_left = 1500
+
     page.fonts = {
         "Poppins": "https://fonts.google.com/share?selection.family=Onest:wght@100..900"
     }

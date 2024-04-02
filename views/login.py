@@ -18,6 +18,43 @@ class Styles:
     BUTTON_COLOR = Colors.BLACK
 
 
+class Input(UserControl):
+    def __init__(self, hint_text, label, password):
+        super().__init__()
+        self.hint_text = hint_text
+        self.label = label
+        self.password = password
+
+    def build(self):
+        text_field_props = {
+            'width': 390 * 0.7,
+            'label_style': TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL),
+            'hint_style': TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL),
+            'label': self.label,
+            'hint_text': self.hint_text,
+            'color': Colors.WHITE,
+            'height': 45,
+            'border_color': Colors.WHITE,
+            'border_radius': 10
+        }
+
+        if self.password:
+            text_field_props.update({
+                'prefix_icon': icons.LOCK,
+                'password': True,
+                'can_reveal_password': True
+            })
+        else:
+            text_field_props.update({
+                'prefix_icon': icons.PERSON,
+            })
+
+        return Container(
+            margin=margin.only(bottom=10),
+            content=TextField(**text_field_props)
+        )
+
+
 def Login(page: Page, params: Params, basket: Basket):
     def text_container(text, size=40, weight=FontWeight.BOLD, margin_top=0, margin_bottom=0):
         return Container(
@@ -46,7 +83,6 @@ def Login(page: Page, params: Params, basket: Basket):
     login = Container(
         width=page.window_width,
         height=page.window_height,
-        expand=True,
         margin=0,
         padding=0,
         gradient=LinearGradient(
@@ -148,5 +184,9 @@ def Login(page: Page, params: Params, basket: Basket):
 
     return View(
         '/',
-        [login]
+        [
+            login
+        ],
+        padding=0
+
     )

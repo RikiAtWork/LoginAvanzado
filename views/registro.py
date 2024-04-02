@@ -30,6 +30,9 @@ def Registro(page: Page, params: Params, basket: Basket):
         style=ButtonStyle(
             bgcolor=colors.TRANSPARENT,
             color=colors.WHITE,
+            side={
+                MaterialState.DEFAULT: BorderSide(1, colors.WHITE),
+            },
             shape={
                 MaterialState.DEFAULT: RoundedRectangleBorder(radius=10),
             }
@@ -74,7 +77,8 @@ def Registro(page: Page, params: Params, basket: Basket):
                                 border_color=colors.WHITE,
                                 border_radius=10,
                                 prefix_icon=icons.PERSON,
-                            )
+                            ),
+
                         )
                     ],
                     alignment=MainAxisAlignment.CENTER
@@ -206,5 +210,8 @@ def Registro(page: Page, params: Params, basket: Basket):
 
     return View(
         '/registro',
-        [registro]
+        [
+            registro
+        ],
+        padding=0
     )
