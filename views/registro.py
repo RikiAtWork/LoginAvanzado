@@ -26,7 +26,14 @@ def Registro(page: Page, params: Params, basket: Basket):
         f"{fecha_formateada}",
         icon=icons.CALENDAR_MONTH,
         on_click=lambda _: date_picker.pick_date(),
-        width=page.window_width * 0.7,
+        width=page.window_width * 0.6,
+        style=ButtonStyle(
+            bgcolor=colors.TRANSPARENT,
+            color=colors.WHITE,
+            shape={
+                MaterialState.DEFAULT: RoundedRectangleBorder(radius=10),
+            }
+        )
     )
 
     registro = Container(
@@ -35,35 +42,35 @@ def Registro(page: Page, params: Params, basket: Basket):
         gradient=LinearGradient(
             begin=alignment.top_center,
             end=alignment.bottom_center,
-            colors=["#7961ed", "#428aed", "#f0f2fc"],
+            colors=["#5d7ae5", "#428aed", "#f0f2fc"],
         ),
         content=Column(
             controls=[
                 Row(
                     controls=[
                         Container(
-                            width=260,
-                            margin=margin.only(top=50, bottom=50),
+                            margin=margin.only(top=100, bottom=50),
                             content=Text("Registro",
                                          style=TextStyle(
                                              color=colors.WHITE,
-                                             size=60,
-                                             weight=FontWeight.W_900,
+                                             size=40,
+                                             weight=FontWeight.BOLD,
                                          ),
                                          )
                         ),
 
                     ],
-                    alignment=MainAxisAlignment.CENTER
+                    alignment=MainAxisAlignment.CENTER,
+                    vertical_alignment=CrossAxisAlignment.CENTER
                 ),
                 Row(
                     controls=[
                         Container(
                             TextField(
-                                width=page.window_width * 0.7,
+                                width=page.window_width * 0.6,
                                 hint_text="DNI / NIF / Pasaporte",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL),
-                                height=50,
+                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
+                                height=40,
                                 border_color=colors.WHITE,
                                 border_radius=10,
                                 prefix_icon=icons.PERSON,
@@ -76,12 +83,11 @@ def Registro(page: Page, params: Params, basket: Basket):
                     controls=[
                         Container(
                             TextField(
-                                width=page.window_width * 0.7,
+                                width=page.window_width * 0.6,
                                 hint_text="Teléfono móvil (9 digitos)",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL),
-                                height=50,
+                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
+                                height=40,
                                 border_color=colors.WHITE,
-
                                 border_radius=10,
                                 prefix_icon=icons.PHONE,
                             )
@@ -93,10 +99,10 @@ def Registro(page: Page, params: Params, basket: Basket):
                     controls=[
                         Container(
                             TextField(
-                                width=page.window_width * 0.7,
+                                width=page.window_width * 0.6,
                                 hint_text="Contraseña",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL),
-                                height=50,
+                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
+                                height=40,
                                 border_color=colors.WHITE,
                                 border_radius=10,
                                 prefix_icon=icons.LOCK,
@@ -111,10 +117,10 @@ def Registro(page: Page, params: Params, basket: Basket):
                     controls=[
                         Container(
                             TextField(
-                                width=page.window_width * 0.7,
+                                width=page.window_width * 0.6,
                                 hint_text="Repita contraseña",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL),
-                                height=50,
+                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
+                                height=40,
                                 border_color=colors.WHITE,
                                 border_radius=10,
                                 prefix_icon=icons.LOCK,
@@ -155,10 +161,15 @@ def Registro(page: Page, params: Params, basket: Basket):
                         Container(
                             margin=margin.only(top=50),
                             content=ElevatedButton("SOLICITAR REGISTRO",
-                                                   width=page.window_width * 0.7,
+                                                   width=page.window_width * 0.6,
                                                    on_click=lambda _: page.go('/'),
                                                    bgcolor=colors.RED_600,
                                                    color=colors.WHITE,
+                                                   style=ButtonStyle(
+                                                       shape={
+                                                           MaterialState.DEFAULT: RoundedRectangleBorder(radius=10),
+                                                       }
+                                                   )
                                                    ),
                         )
                     ],
@@ -170,8 +181,9 @@ def Registro(page: Page, params: Params, basket: Basket):
                             margin=margin.only(top=10),
                             content=Checkbox("He leído ",
                                              value=False,
-                                             active_color=colors.BLUE,
-                                             label_style=TextStyle(color=colors.BLACK)
+                                             active_color=colors.LIGHT_BLUE,
+                                             label_style=TextStyle(color=colors.BLACK, weight=FontWeight.NORMAL),
+                                             hover_color=colors.BLUE_ACCENT_700,
                                              )
                                              
                         ), Container(

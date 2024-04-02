@@ -10,12 +10,13 @@ def main(page: Page):
     page.spacing = 0
     page.window_width = 390
     page.window_height = 844
+    page.window_max_width = 390
+    page.window_max_height = 844
     page.fonts = {
-        "Poppins": "https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,"
-                   "200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,"
-                   "200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'"
+        "Poppins": "https://fonts.google.com/share?selection.family=Onest:wght@100..900"
     }
     page.theme = Theme(font_family="Poppins")
+    page.theme_mode = ThemeMode.DARK
 
     app_routes = [
         path('/', clear=True, view=Login),
@@ -26,4 +27,5 @@ def main(page: Page):
     page.go(page.route)
 
 
-app(target=main)
+if __name__ == '__main__':
+    app(target=main)
