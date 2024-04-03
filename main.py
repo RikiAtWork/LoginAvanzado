@@ -3,6 +3,7 @@ from flet_route import *
 
 from views.login import Login
 from views.registro import Registro
+from apps.home import Home
 
 
 def main(page: Page):
@@ -23,6 +24,8 @@ def main(page: Page):
     app_routes = [
         path('/', clear=True, view=Login),
         path('/registro', clear=True, view=Registro),
+        path('/home', clear=True, view=Home),
+
     ]
 
     Routing(page=page, app_routes=app_routes)

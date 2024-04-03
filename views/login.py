@@ -1,5 +1,9 @@
+import requests
 from flet import *
 from flet_route import Params, Basket
+
+
+# import hashlib
 
 
 class Colors:
@@ -18,44 +22,30 @@ class Styles:
     BUTTON_COLOR = Colors.BLACK
 
 
-class Input(UserControl):
-    def __init__(self, hint_text, label, password):
-        super().__init__()
-        self.hint_text = hint_text
-        self.label = label
-        self.password = password
+def login_api(usuario, contraseña):
+    url = "https://integraciones.clinica-atenea.com:58000/api/v1/app/Login"
+    auth = {
+        "DNI": usuario,
+        "Pwd": contraseña,
+    }
 
-    def build(self):
-        text_field_props = {
-            'width': 390 * 0.7,
-            'label_style': TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL),
-            'hint_style': TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL),
-            'label': self.label,
-            'hint_text': self.hint_text,
-            'color': Colors.WHITE,
-            'height': 45,
-            'border_color': Colors.WHITE,
-            'border_radius': 10
-        }
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
 
-        if self.password:
-            text_field_props.update({
-                'prefix_icon': icons.LOCK,
-                'password': True,
-                'can_reveal_password': True
-            })
-        else:
-            text_field_props.update({
-                'prefix_icon': icons.PERSON,
-            })
-
-        return Container(
-            margin=margin.only(bottom=10),
-            content=TextField(**text_field_props)
-        )
+    response = requests.request("POST", url, headers=headers, data=auth)
+    return response
 
 
 def Login(page: Page, params: Params, basket: Basket):
+    def print_respuesta(response):
+        print(response.text)
+        print(response.json())
+        print(response.status_code)
+        print(response.headers)
+        if (response.status_code == 200):
+            page.go('/home')
+
     def text_container(text, size=40, weight=FontWeight.BOLD, margin_top=0, margin_bottom=0):
         return Container(
             margin=margin.only(top=margin_top, bottom=margin_bottom),
@@ -80,6 +70,49 @@ def Login(page: Page, params: Params, basket: Basket):
     def calcular_ancho(percentage):
         return page.window_width * percentage
 
+    def button_clicked(e):
+        usuario = usuario_textfield.value
+        contraseña = contraseña_textfield.value
+
+        # 5BF9a3+U9Wg=
+        # hashed = hashlib.md5(contraseña.encode())
+
+        print("Usuario ingresado:", usuario)
+        print("Contraseña ingresada:", contraseña)
+
+        respuesta = login_api(usuario, contraseña)
+        print_respuesta(respuesta)
+
+        # print("Contraseña ingresada:", hashed.hexdigest())
+
+    usuario_textfield = TextField(
+        width=calcular_ancho(0.6),
+        label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),
+        hint_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),
+        label="Usuario",
+        hint_text='DNI / NIF / Pasaporte',
+        color=Colors.WHITE,
+        height=40,
+        content_padding=10,
+        border_color=Colors.WHITE,
+        border_radius=10,
+        prefix_icon=icons.PERSON,
+    )
+
+    contraseña_textfield = TextField(
+        width=calcular_ancho(0.6),
+        label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),
+        label="Contraseña",
+        height=40,
+        content_padding=10,
+        border_color=Colors.WHITE,
+        border_radius=10,
+        color=Colors.WHITE,
+        prefix_icon=icons.LOCK,
+        password=True,
+        can_reveal_password=True
+    )
+
     login = Container(
         width=page.window_width,
         height=page.window_height,
@@ -103,18 +136,8 @@ def Login(page: Page, params: Params, basket: Basket):
                     controls=[
                         Container(
                             margin=margin.only(bottom=10),
-                            content=TextField(
-                                width=calcular_ancho(0.6),
-                                label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),
-                                hint_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),
-                                label="Usuario",
-                                hint_text='DNI / NIF / Pasaporte',
-                                color=Colors.WHITE,
-                                height=40,
-                                border_color=Colors.WHITE,
-                                border_radius=10,
-                                prefix_icon=icons.PERSON,
-                            )
+                            content=usuario_textfield
+
                         )
                     ],
                     alignment=MainAxisAlignment.CENTER
@@ -122,19 +145,9 @@ def Login(page: Page, params: Params, basket: Basket):
                 Row(
                     controls=[
                         Container(
-                            content=TextField(
-                                width=calcular_ancho(0.6),
-                                label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),
-                                label="Contraseña",
-                                height=40,
-                                border_color=Colors.WHITE,
-                                border_radius=10,
-                                color=Colors.WHITE,
-                                prefix_icon=icons.LOCK,
-                                password=True,
-                                can_reveal_password=True
-                            )
+                            content=contraseña_textfield
                         )
+
                     ],
                     alignment=MainAxisAlignment.CENTER
                 ),
@@ -144,7 +157,7 @@ def Login(page: Page, params: Params, basket: Basket):
                             margin=margin.only(top=50),
                             content=ElevatedButton("INICIAR SESIÓN",
                                                    width=calcular_ancho(0.6),
-                                                   on_click=lambda _: page.go('/'),
+                                                   on_click=button_clicked,
                                                    color=Colors.WHITE,
                                                    bgcolor=colors.RED_600,
                                                    style=ButtonStyle(
