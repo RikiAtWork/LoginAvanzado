@@ -1,9 +1,7 @@
 import requests
 from flet import *
 from flet_route import Params, Basket
-
-
-# import hashlib
+from views.encryption import Encrypt
 
 
 class Colors:
@@ -39,11 +37,9 @@ def login_api(usuario, contraseña):
 
 def Login(page: Page, params: Params, basket: Basket):
     def print_respuesta(response):
-        print(response.text)
-        print(response.json())
         print(response.status_code)
-        print(response.headers)
         if (response.status_code == 200):
+            page.client_storage.set("data", response.json())
             page.go('/home')
 
     def text_container(text, size=40, weight=FontWeight.BOLD, margin_top=0, margin_bottom=0):
@@ -74,13 +70,17 @@ def Login(page: Page, params: Params, basket: Basket):
         usuario = usuario_textfield.value
         contraseña = contraseña_textfield.value
 
+        encrypted = Encrypt.my_encrypt(contraseña)
+        print("Pass encriptado:", encrypted)
+        decrypted = Encrypt.my_decrypt(encrypted)
+        print("Pass desencriptado:", decrypted)
+
         # 5BF9a3+U9Wg=
-        # hashed = hashlib.md5(contraseña.encode())
 
         print("Usuario ingresado:", usuario)
-        print("Contraseña ingresada:", contraseña)
+        print("Contraseña ingresada:", encrypted)
 
-        respuesta = login_api(usuario, contraseña)
+        respuesta = login_api(usuario, encrypted)
         print_respuesta(respuesta)
 
         # print("Contraseña ingresada:", hashed.hexdigest())
@@ -127,7 +127,14 @@ def Login(page: Page, params: Params, basket: Basket):
             controls=[
                 Row(
                     [
-                        text_container("Login", 40, FontWeight.BOLD, 100, 50)
+                        Container(
+                            margin=margin.only(top=100, bottom=50),
+                            content=Image(
+                                src='./assets/logo.png',
+                                width=150,
+
+                            )
+                        )
                     ],
                     alignment=MainAxisAlignment.CENTER,
                     vertical_alignment=CrossAxisAlignment.CENTER

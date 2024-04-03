@@ -50,16 +50,31 @@ def Registro(page: Page, params: Params, basket: Basket):
         content=Column(
             controls=[
                 Row(
-                    controls=[
+                    [
                         Container(
-                            margin=margin.only(top=100, bottom=50),
-                            content=Text("Registro",
-                                         style=TextStyle(
-                                             color=colors.WHITE,
-                                             size=40,
-                                             weight=FontWeight.BOLD,
-                                         ),
-                                         )
+                            margin=margin.only(top=100),
+                            content=Image(
+                                src='assets/atenea.png',
+                                width=50,
+                            )
+                        ),
+
+                    ],
+                    alignment=MainAxisAlignment.CENTER,
+                    vertical_alignment=CrossAxisAlignment.CENTER
+                ),
+                Row(
+                    [
+                        Container(
+                            margin=margin.only(bottom=50),
+                            content=Text(
+                                "REGISTRO",
+                                style=TextStyle(
+                                    size=20,
+                                    weight=FontWeight.BOLD,
+                                    color=colors.WHITE
+                                )
+                            )
                         ),
 
                     ],
