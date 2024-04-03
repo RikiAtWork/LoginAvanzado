@@ -11,7 +11,7 @@ def main(page: Page):
     page.spacing = 0
     page.window_width = 390
     page.window_height = 844
-    page.window_max_width = 390
+    page.window_max_width = 800
     page.window_max_height = 844
     page.window_left = 1500
 

@@ -83,8 +83,6 @@ def Login(page: Page, params: Params, basket: Basket):
         respuesta = login_api(usuario, encrypted)
         print_respuesta(respuesta)
 
-        # print("Contraseña ingresada:", hashed.hexdigest())
-
     usuario_textfield = TextField(
         width=calcular_ancho(0.6),
         label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),

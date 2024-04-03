@@ -29,8 +29,8 @@ def Home(page: Page, params: Params, basket: Basket):
         print(datos)
         return datos['Data']
 
-    especialidad = obtenerDatos()['Citas'][14]
-    print(especialidad)
+    # especialidad = obtenerDatos()['Citas'][14]
+    # print(especialidad)
     appbar = AppBar(
         leading=Icon(icons.HOME),
         leading_width=40,
@@ -51,58 +51,59 @@ def Home(page: Page, params: Params, basket: Basket):
         ]
     )
 
-    usuario_bar = Container(
-        width=page.window_width,
-        height=56,
-        bgcolor="#ffadc0",
-        content=Row(
-            [
-                Column(
-                    [
-                        Container(
-                            width=50,
-                            height=56,
-                            margin=margin.only(left=-5),
-                            content=Icon(icons.PEOPLE_ALT,
-                                         color=colors.BLACK,
-                                         size=20)
-                        )
-                    ]
-
-                ),
-                Column(
-                    [
-                        Container(
-                            width=200,
-                            content=Text(
-                                f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}",
-                                style=TextStyle(
-                                    size=16,
-                                    color=colors.BLACK,
-                                    weight=FontWeight.BOLD)
-                            )
-                        )
-                    ], alignment=MainAxisAlignment.CENTER,
-                ),
-                Column(
-                    [
-                        Container(
-                            width=50,
-                            height=56,
-                            margin=margin.only(left=40),
-                            content=IconButton(
-                                content=Image(
-                                    src="./assets/qr.png",
-                                    width=30
-                                ),
-                            ),
-                        )
-                    ]
-
-                ),
-            ],
-        )
-    )
+    # usuario_bar = Container(
+    #     width=page.window_max_width,
+    #     height=56,
+    #     bgcolor="#ffadc0",
+    #     content=Row(
+    #         [
+    #             Column(
+    #                 [
+    #                     Container(
+    #                         width=50,
+    #                         height=56,
+    #                         margin=margin.only(left=-5),
+    #                         content=Icon(icons.PEOPLE_ALT,
+    #                                      color=colors.BLACK,
+    #                                      size=20)
+    #                     )
+    #                 ]
+    #
+    #             ),
+    #             Column(
+    #                 [
+    #                     Container(
+    #
+    #                         # bgcolor=colors.BLUE,
+    #                         content=Text(
+    #                             f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}",
+    #                             style=TextStyle(
+    #                                 size=16,
+    #                                 color=colors.BLACK,
+    #                                 weight=FontWeight.BOLD)
+    #                         )
+    #                     )
+    #                 ], alignment=MainAxisAlignment.CENTER,
+    #             ),
+    #             Column(
+    #                 [
+    #                     Container(
+    #                         width=50,
+    #                         height=56,
+    #                         margin=margin.only(left=45),
+    #                         content=IconButton(
+    #                             content=Image(
+    #                                 src="./assets/qr.png",
+    #                                 width=30
+    #                             ),
+    #                         ),
+    #                     )
+    #                 ]
+    #
+    #             ),
+    #         ],
+    #     )
+    # )
 
     nueva_cita = Container(
         margin=margin.only(top=50),
@@ -151,8 +152,6 @@ def Home(page: Page, params: Params, basket: Basket):
     )
 
     background = Container(
-        width=page.window_width,
-        height=page.window_height,
         margin=0,
         padding=20,
         gradient=LinearGradient(
@@ -169,8 +168,8 @@ def Home(page: Page, params: Params, basket: Basket):
     )
 
     home = Container(
-        width=page.window_width,
-        height=page.window_height,
+        width=page.window_max_width,
+        height=page.window_max_height,
         margin=0,
         padding=20,
         content=Column(
@@ -184,7 +183,7 @@ def Home(page: Page, params: Params, basket: Basket):
     )
 
     imagen = Container(
-        width=page.window_width,
+        width=page.window_max_width,
         height=page.window_height / 1.5,
         padding=0,
         margin=0,
@@ -208,8 +207,8 @@ def Home(page: Page, params: Params, basket: Basket):
             imagen,
             home
         ],
-        width=page.window_width,
-        height=page.window_height,
+        width=page.window_max_width,
+        height=page.window_max_height,
 
     )
 
@@ -220,7 +219,7 @@ def Home(page: Page, params: Params, basket: Basket):
         '/home',
         [
             appbar,
-            usuario_bar,
+            # usuario_bar,
             stack,
             navigation_bar
         ],
