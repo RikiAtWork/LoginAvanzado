@@ -29,6 +29,8 @@ def Home(page: Page, params: Params, basket: Basket):
         print(datos)
         return datos['Data']
 
+    especialidad = obtenerDatos()['Citas'][14]
+    print(especialidad)
     appbar = AppBar(
         leading=Icon(icons.HOME),
         leading_width=40,
@@ -137,7 +139,15 @@ def Home(page: Page, params: Params, basket: Basket):
         bgcolor=colors.GREY_50,
         border_radius=10,
         border=border.all(1.5, "#ffffff"),
-        content=Column()
+        # content=Column(
+        #     [
+        #         Row(
+        #             [
+        #                 Text(f"{especialidad}")
+        #             ]
+        #         )
+        #     ]
+        # )
     )
 
     background = Container(
