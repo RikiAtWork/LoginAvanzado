@@ -1,5 +1,9 @@
 from flet import *
 from flet_route import Params, Basket
+from components.AppBar import MyAppBar
+from components.UserBar import MyUserBar
+
+
 import math
 
 
@@ -26,84 +30,13 @@ def Home(page: Page, params: Params, basket: Basket):
     def obtenerDatos():
         datos = page.client_storage.get("data")
         print("Vista Home:")
-        print(datos)
         return datos['Data']
 
-    # especialidad = obtenerDatos()['Citas'][14]
-    # print(especialidad)
-    appbar = AppBar(
-        leading=Icon(icons.HOME),
-        leading_width=40,
-        title=Text("PRÓXIMAS CITAS",
-                   style=TextStyle(
-                       size=16
-                   )),
-        color=colors.WHITE,
-        bgcolor="#2a68f7",
-        actions=[
-            IconButton(
-                content=Image(
-                    src="./assets/logo.png",
-                    width=80
-                ),
-            ),
-
-        ]
-    )
-
-    # usuario_bar = Container(
-    #     width=page.window_max_width,
-    #     height=56,
-    #     bgcolor="#ffadc0",
-    #     content=Row(
-    #         [
-    #             Column(
-    #                 [
-    #                     Container(
-    #                         width=50,
-    #                         height=56,
-    #                         margin=margin.only(left=-5),
-    #                         content=Icon(icons.PEOPLE_ALT,
-    #                                      color=colors.BLACK,
-    #                                      size=20)
-    #                     )
-    #                 ]
-    #
-    #             ),
-    #             Column(
-    #                 [
-    #                     Container(
-    #
-    #                         # bgcolor=colors.BLUE,
-    #                         content=Text(
-    #                             f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}",
-    #                             style=TextStyle(
-    #                                 size=16,
-    #                                 color=colors.BLACK,
-    #                                 weight=FontWeight.BOLD)
-    #                         )
-    #                     )
-    #                 ], alignment=MainAxisAlignment.CENTER,
-    #             ),
-    #             Column(
-    #                 [
-    #                     Container(
-    #                         width=50,
-    #                         height=56,
-    #                         margin=margin.only(left=45),
-    #                         content=IconButton(
-    #                             content=Image(
-    #                                 src="./assets/qr.png",
-    #                                 width=30
-    #                             ),
-    #                         ),
-    #                     )
-    #                 ]
-    #
-    #             ),
-    #         ],
-    #     )
-    # )
+    def obtenerCitas():
+        citas = obtenerDatos()['Citas']
+        lista_citas = citas[0]
+        print(lista_citas)
+        return lista_citas
 
     nueva_cita = Container(
         margin=margin.only(top=50),
@@ -136,19 +69,97 @@ def Home(page: Page, params: Params, basket: Basket):
 
     card = Container(
         width=page.window_width - 100,
-        height=100,
-        bgcolor=colors.GREY_50,
+        height=125,
+        bgcolor=colors.WHITE70,
         border_radius=10,
-        border=border.all(1.5, "#ffffff"),
-        # content=Column(
-        #     [
-        #         Row(
-        #             [
-        #                 Text(f"{especialidad}")
-        #             ]
-        #         )
-        #     ]
-        # )
+        border=border.all(2, "#FFFFFF"),
+        content=Column(
+            [
+                Row(
+                    [
+                        Text(f"{obtenerCitas()['Especialidad']}",
+                             color=colors.BLACK,
+                             weight=FontWeight.W_700,
+                             style=TextStyle(
+                                 decoration=TextDecoration.UNDERLINE,
+                                 decoration_color=colors.BLACK,
+                                 decoration_thickness=1,
+                             )
+                             ),
+                        Text(f"(Clínica de L'Eliana)",
+                             color=colors.BLACK,
+                             weight=FontWeight.W_700,
+                             ),
+
+                    ], alignment=MainAxisAlignment.SPACE_EVENLY,
+                    spacing=0,
+                ),
+                Row(
+                    [
+                        Text(f"{obtenerCitas()['Especialista']}",
+                             color=colors.BLACK,
+                             italic=True,
+                             size=11)
+
+                    ], alignment=MainAxisAlignment.CENTER,
+                    spacing=0,
+                ),
+                Row(
+                    [
+                        Text(
+                            f"{obtenerCitas()['Fecha']} - {obtenerCitas()['hora']}:{obtenerCitas()['minuto']} h. ",
+                            color=colors.BLACK,
+                            size=12),
+                        Text(
+                            f"- {obtenerCitas()['VisitTypeName']}",
+                            color=colors.GREY_600,
+                            size=12
+                        ),
+                    ], alignment=MainAxisAlignment.CENTER,
+                    spacing=0,
+                ),
+                Row(
+                    [
+                        TextButton(
+                            width=90,
+                            height=30,
+                            style=ButtonStyle(
+                                padding=5,
+                                bgcolor=colors.RED_600,
+                                shape={
+                                    MaterialState.DEFAULT: RoundedRectangleBorder(radius=10),
+                                    MaterialState.HOVERED: RoundedRectangleBorder(radius=15),
+                                },
+                            ),
+                            content=Row(
+                                [
+                                    Icon(name=icons.EDIT_OUTLINED, color=colors.WHITE, size=14),
+                                    Text("CAMBIAR", size=12, color=colors.WHITE)
+                                ]
+                            )
+                        ),
+                        TextButton(
+                            width=90,
+                            height=30,
+                            style=ButtonStyle(
+                                padding=5,
+                                bgcolor=colors.RED_600,
+                                shape={
+                                    MaterialState.DEFAULT: RoundedRectangleBorder(radius=10),
+                                    MaterialState.HOVERED: RoundedRectangleBorder(radius=15),
+                                },
+                            ),
+                            content=Row(
+                                [
+                                    Icon(name=icons.DELETE, color=colors.WHITE, size=14),
+                                    Text("ANULAR", size=12, color=colors.WHITE)
+                                ]
+                            )
+                        )
+                    ], alignment=MainAxisAlignment.CENTER
+                )
+            ]
+        )
     )
 
     background = Container(
@@ -160,6 +171,8 @@ def Home(page: Page, params: Params, basket: Basket):
             colors=[
                 "#FFFFFF",
                 "#6e91f3",
+
+
             ],
             tile_mode=GradientTileMode.MIRROR,
             rotation=math.pi / 3,
@@ -205,7 +218,7 @@ def Home(page: Page, params: Params, basket: Basket):
         [
             background,
             imagen,
-            home
+            home,
         ],
         width=page.window_max_width,
         height=page.window_max_height,
@@ -215,11 +228,14 @@ def Home(page: Page, params: Params, basket: Basket):
     page.title = "Home"
     print("Ruta login:", page.route)
 
+    header = MyAppBar("PRÓXIMAS CITAS", icons.MENU, "")
+    user_bar = MyUserBar(page, f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}")
+
     return View(
         '/home',
         [
-            appbar,
-            # usuario_bar,
+            header.build(),
+            user_bar.build(),
             stack,
             navigation_bar
         ],

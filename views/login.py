@@ -20,11 +20,11 @@ class Styles:
     BUTTON_COLOR = Colors.BLACK
 
 
-def login_api(usuario, contraseña):
+def login_api(usuario, password):
     url = "https://integraciones.clinica-atenea.com:58000/api/v1/app/Login"
     auth = {
         "DNI": usuario,
-        "Pwd": contraseña,
+        "Pwd": password,
     }
 
     headers = {
@@ -38,21 +38,9 @@ def login_api(usuario, contraseña):
 def Login(page: Page, params: Params, basket: Basket):
     def print_respuesta(response):
         print(response.status_code)
-        if (response.status_code == 200):
+        if response.status_code == 200:
             page.client_storage.set("data", response.json())
             page.go('/home')
-
-    def text_container(text, size=40, weight=FontWeight.BOLD, margin_top=0, margin_bottom=0):
-        return Container(
-            margin=margin.only(top=margin_top, bottom=margin_bottom),
-            content=Text(text,
-                         style=TextStyle(
-                             color=Colors.WHITE,
-                             size=size,
-                             weight=weight,
-                         ),
-                         ),
-        )
 
     def text_button_container(text, on_click):
         return Container(
@@ -68,9 +56,9 @@ def Login(page: Page, params: Params, basket: Basket):
 
     def button_clicked(e):
         usuario = usuario_textfield.value
-        contraseña = contraseña_textfield.value
+        password = password_textfield.value
 
-        encrypted = Encrypt.my_encrypt(contraseña)
+        encrypted = Encrypt.my_encrypt(password)
         print("Pass encriptado:", encrypted)
         decrypted = Encrypt.my_decrypt(encrypted)
         print("Pass desencriptado:", decrypted)
@@ -97,7 +85,7 @@ def Login(page: Page, params: Params, basket: Basket):
         prefix_icon=icons.PERSON,
     )
 
-    contraseña_textfield = TextField(
+    password_textfield = TextField(
         width=calcular_ancho(0.6),
         label_style=TextStyle(color=Colors.WHITE, weight=FontWeight.NORMAL, size=14),
         label="Contraseña",
@@ -150,7 +138,7 @@ def Login(page: Page, params: Params, basket: Basket):
                 Row(
                     controls=[
                         Container(
-                            content=contraseña_textfield
+                            content=password_textfield
                         )
 
                     ],
