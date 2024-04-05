@@ -4,8 +4,7 @@ from components.AppBar import MyAppBar
 from components.UserBar import MyUserBar
 from components.Background import MyBackground
 from components.NavigationBar import MyNavigationBar
-from components.citas.Card import MyCard
-from components.citas.ButtonCita import MyButtonCita
+from components.citas.ButtonHistorico import MyButtonHistorico
 
 
 class Colors:
@@ -25,35 +24,51 @@ class Styles:
     BUTTON_COLOR = Colors.BLACK
 
 
-def Home(page: Page, params: Params, basket: Basket):
+def HistoricoCita(page: Page, params: Params, basket: Basket):
     def obtenerDatos():
         datos = page.client_storage.get("data")
         return datos['Data']
 
-    def obtenerCitas():
-        citas = obtenerDatos()['Citas']
-        lista_citas = citas[0]
-        print(lista_citas)
-        return lista_citas
+    barCitasTexto = Container(
+        width=page.window_max_width,
+        padding=0,
+        margin=0,
+        height=40,
+        bgcolor="#b8c9f8",
+        content=Column(
+            [
+                Row(
+                    [
+                        Text("CITAS DE TODAS LAS FECHAS\nTODAS LAS ESPECIALIDADES - TODOS LOS CENTROS", size=10,
+                             color=colors.BLACK, text_align=TextAlign.CENTER, style=TextStyle(letter_spacing=0))
+                    ], alignment=MainAxisAlignment.CENTER, vertical_alignment=CrossAxisAlignment.CENTER
+                ),
+            ], alignment=MainAxisAlignment.CENTER,
+            horizontal_alignment=CrossAxisAlignment.CENTER
+        )
+    )
 
-    card = MyCard(page, obtenerCitas()['Especialidad'], "Clínica de L'Eliana", obtenerCitas()['Especialista'],
-                  f"{obtenerCitas()['Fecha']} - {obtenerCitas()['hora']}:{obtenerCitas()['minuto']} h. ",
-                  obtenerCitas()['VisitTypeName'])
+    filtroButton = MyButtonHistorico("FILTRAR CITAS", icons.FILTER_ALT)
+    verButton = MyButtonHistorico("VER TODAS", icons.REMOVE_RED_EYE)
 
-    button_cita = MyButtonCita(page)
-
-    home = Container(
+    historico = Container(
         width=page.window_max_width,
         height=page.window_max_height,
         margin=0,
-        padding=20,
         content=Column(
             [
-                card.build(),
-                button_cita.build()
+                barCitasTexto,
+                Container(
+                    margin=margin.only(top=page.window_max_height - 400),
+                    content=Row(
+                        [
+                            filtroButton,
+                            verButton
+                        ], alignment=MainAxisAlignment.CENTER,
+                    ),
+                )
             ],
             horizontal_alignment=CrossAxisAlignment.CENTER,
-
         )
     )
 
@@ -82,17 +97,17 @@ def Home(page: Page, params: Params, basket: Basket):
         [
             background.build(),
             imagen,
-            home,
+            historico
         ],
         width=page.window_max_width,
         height=page.window_max_height,
     )
 
-    header = MyAppBar("PRÓXIMAS CITAS", icons.MENU, "")
+    header = MyAppBar("HISTÓRICO DE CITAS", icons.MENU, "")
     user_bar = MyUserBar(page, f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}")
-    navigation_bar = MyNavigationBar(page, 0)
+    navigation_bar = MyNavigationBar(page, 2)
 
-    page.title = "Próximas citas"
+    page.title = "Histórico de citas"
     theme = Theme()
     theme.page_transitions.android = PageTransitionTheme.ZOOM
     theme.page_transitions.ios = PageTransitionTheme.ZOOM
@@ -103,7 +118,7 @@ def Home(page: Page, params: Params, basket: Basket):
     print("Ruta login:", page.route)
 
     return View(
-        '/home',
+        '/historico',
         [
             header.build(),
             user_bar.build(),
@@ -113,3 +128,4 @@ def Home(page: Page, params: Params, basket: Basket):
         padding=0,
         spacing=0
     )
+

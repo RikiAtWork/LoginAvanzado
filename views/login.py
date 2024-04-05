@@ -186,6 +186,13 @@ def Login(page: Page, params: Params, basket: Basket):
     )
     page.title = "Iniciar sesión"
     page.theme = Theme(color_scheme_seed="blue")
+    theme = Theme()
+    theme.page_transitions.android = PageTransitionTheme.ZOOM
+    theme.page_transitions.ios = PageTransitionTheme.ZOOM
+    theme.page_transitions.macos = PageTransitionTheme.ZOOM
+    theme.page_transitions.linux = PageTransitionTheme.ZOOM
+    theme.page_transitions.windows = PageTransitionTheme.ZOOM
+    page.theme = theme
     print("Ruta login:", page.route)
 
     return View(

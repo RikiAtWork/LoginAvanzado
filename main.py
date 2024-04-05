@@ -4,6 +4,8 @@ from flet_route import *
 from views.login import Login
 from views.registro import Registro
 from apps.home import Home
+from apps.nuevaCita import NuevaCita
+from apps.historico import HistoricoCita
 
 
 def main(page: Page):
@@ -21,13 +23,23 @@ def main(page: Page):
     page.theme = Theme(font_family="Poppins")
     page.theme_mode = ThemeMode.DARK
 
+    theme = Theme()
+    theme.page_transitions.android = PageTransitionTheme.ZOOM
+    theme.page_transitions.ios = PageTransitionTheme.ZOOM
+    theme.page_transitions.macos = PageTransitionTheme.ZOOM
+    theme.page_transitions.linux = PageTransitionTheme.ZOOM
+    theme.page_transitions.windows = PageTransitionTheme.ZOOM
+    page.theme = theme
+
+    page.update()
+
     app_routes = [
         path('/', clear=True, view=Login),
         path('/registro', clear=True, view=Registro),
-        path('/home', clear=True, view=Home),
-
+        path('/home', clear=True, view=Home, ),
+        path('/nueva_cita', clear=True, view=NuevaCita),
+        path('/historico', clear=True, view=HistoricoCita),
     ]
-
     Routing(page=page, app_routes=app_routes)
     page.go(page.route)
 

@@ -4,8 +4,7 @@ from components.AppBar import MyAppBar
 from components.UserBar import MyUserBar
 from components.Background import MyBackground
 from components.NavigationBar import MyNavigationBar
-from components.citas.Card import MyCard
-from components.citas.ButtonCita import MyButtonCita
+from components.citas.CardClinica import MyCardClinica
 
 
 class Colors:
@@ -25,32 +24,35 @@ class Styles:
     BUTTON_COLOR = Colors.BLACK
 
 
-def Home(page: Page, params: Params, basket: Basket):
+def NuevaCita(page: Page, params: Params, basket: Basket):
     def obtenerDatos():
         datos = page.client_storage.get("data")
         return datos['Data']
 
-    def obtenerCitas():
-        citas = obtenerDatos()['Citas']
-        lista_citas = citas[0]
-        print(lista_citas)
-        return lista_citas
+    cardAldaia = MyCardClinica(page, "Clínica Aldaia", "C/ Xest, 32", "Aldaia",
+                               "./assets/clinica/aldaia.webp")
 
-    card = MyCard(page, obtenerCitas()['Especialidad'], "Clínica de L'Eliana", obtenerCitas()['Especialista'],
-                  f"{obtenerCitas()['Fecha']} - {obtenerCitas()['hora']}:{obtenerCitas()['minuto']} h. ",
-                  obtenerCitas()['VisitTypeName'])
+    cardTorrent = MyCardClinica(page, "Clínica Torrent", "Avda. Juan Carlos I, 12", "Torrent",
+                               "./assets/clinica/torrent.webp")
 
-    button_cita = MyButtonCita(page)
+    cardEliana = MyCardClinica(page, "Clínica El Osito", "C/ Tuéjar, 37 Local 3B", "L'Eliana",
+                                "./assets/clinica/eliana.webp")
 
-    home = Container(
+    cardAlfafar = MyCardClinica(page, "Clínica Alfafar", "CC Parque Albufera", "Alfafar",
+                                "./assets/clinica/alfafar.webp")
+
+    cita = Container(
         width=page.window_max_width,
         height=page.window_max_height,
         margin=0,
         padding=20,
         content=Column(
             [
-                card.build(),
-                button_cita.build()
+                cardAldaia,
+                cardTorrent,
+                cardEliana,
+                cardAlfafar,
+
             ],
             horizontal_alignment=CrossAxisAlignment.CENTER,
 
@@ -82,28 +84,28 @@ def Home(page: Page, params: Params, basket: Basket):
         [
             background.build(),
             imagen,
-            home,
+            cita
         ],
         width=page.window_max_width,
         height=page.window_max_height,
     )
 
-    header = MyAppBar("PRÓXIMAS CITAS", icons.MENU, "")
+    header = MyAppBar("SELECCIONE CLÍNICA", icons.MENU, "")
     user_bar = MyUserBar(page, f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}")
-    navigation_bar = MyNavigationBar(page, 0)
+    navigation_bar = MyNavigationBar(page, 1)
 
-    page.title = "Próximas citas"
+    page.title = "Nuevas citas"
     theme = Theme()
-    theme.page_transitions.android = PageTransitionTheme.ZOOM
-    theme.page_transitions.ios = PageTransitionTheme.ZOOM
-    theme.page_transitions.macos = PageTransitionTheme.ZOOM
-    theme.page_transitions.linux = PageTransitionTheme.ZOOM
-    theme.page_transitions.windows = PageTransitionTheme.ZOOM
+    theme.page_transitions.android = PageTransitionTheme.NONE
+    theme.page_transitions.ios = PageTransitionTheme.NONE
+    theme.page_transitions.macos = PageTransitionTheme.NONE
+    theme.page_transitions.linux = PageTransitionTheme.NONE
+    theme.page_transitions.windows = PageTransitionTheme.NONE
     page.theme = theme
     print("Ruta login:", page.route)
 
     return View(
-        '/home',
+        '/nueva_cita',
         [
             header.build(),
             user_bar.build(),
