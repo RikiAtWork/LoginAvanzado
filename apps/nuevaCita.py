@@ -3,8 +3,9 @@ from flet_route import Params, Basket
 from components.AppBar import MyAppBar
 from components.UserBar import MyUserBar
 from components.Background import MyBackground
-from components.NavigationBar import MyNavigationBar
 from components.citas.CardClinica import MyCardClinica
+from components.base_view import BaseView
+from components.NavigationDrawer import MyDrawer
 
 
 class Colors:
@@ -33,10 +34,10 @@ def NuevaCita(page: Page, params: Params, basket: Basket):
                                "./assets/clinica/aldaia.webp")
 
     cardTorrent = MyCardClinica(page, "Clínica Torrent", "Avda. Juan Carlos I, 12", "Torrent",
-                               "./assets/clinica/torrent.webp")
+                                "./assets/clinica/torrent.webp")
 
     cardEliana = MyCardClinica(page, "Clínica El Osito", "C/ Tuéjar, 37 Local 3B", "L'Eliana",
-                                "./assets/clinica/eliana.webp")
+                               "./assets/clinica/eliana.webp")
 
     cardAlfafar = MyCardClinica(page, "Clínica Alfafar", "CC Parque Albufera", "Alfafar",
                                 "./assets/clinica/alfafar.webp")
@@ -90,9 +91,9 @@ def NuevaCita(page: Page, params: Params, basket: Basket):
         height=page.window_max_height,
     )
 
-    header = MyAppBar("SELECCIONE CLÍNICA", icons.MENU, "")
+    header = MyAppBar("SELECCIONE CLÍNICA", icons.MENU, "", page)
     user_bar = MyUserBar(page, f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}")
-    navigation_bar = MyNavigationBar(page, 1)
+    # navigation_bar = MyNavigationBar(page, 1)
 
     page.title = "Nuevas citas"
     theme = Theme()
@@ -104,14 +105,4 @@ def NuevaCita(page: Page, params: Params, basket: Basket):
     page.theme = theme
     print("Ruta login:", page.route)
 
-    return View(
-        '/nueva_cita',
-        [
-            header.build(),
-            user_bar.build(),
-            stack,
-            navigation_bar.build()
-        ],
-        padding=0,
-        spacing=0
-    )
+    return BaseView(page, [header.build(), user_bar.build(), stack], '/nueva_cita', 1)

@@ -6,6 +6,7 @@ from views.registro import Registro
 from apps.home import Home
 from apps.nuevaCita import NuevaCita
 from apps.historico import HistoricoCita
+from components.AppBar import MyAppBar
 
 
 def main(page: Page):
@@ -31,7 +32,7 @@ def main(page: Page):
     theme.page_transitions.windows = PageTransitionTheme.ZOOM
     page.theme = theme
 
-    page.update()
+    page.drawer = NavigationDrawer()
 
     app_routes = [
         path('/', clear=True, view=Login),
@@ -40,6 +41,7 @@ def main(page: Page):
         path('/nueva_cita', clear=True, view=NuevaCita),
         path('/historico', clear=True, view=HistoricoCita),
     ]
+
     Routing(page=page, app_routes=app_routes)
     page.go(page.route)
 

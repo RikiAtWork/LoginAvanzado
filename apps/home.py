@@ -3,9 +3,9 @@ from flet_route import Params, Basket
 from components.AppBar import MyAppBar
 from components.UserBar import MyUserBar
 from components.Background import MyBackground
-from components.NavigationBar import MyNavigationBar
 from components.citas.Card import MyCard
 from components.citas.ButtonCita import MyButtonCita
+from components.base_view import BaseView
 
 
 class Colors:
@@ -88,28 +88,17 @@ def Home(page: Page, params: Params, basket: Basket):
         height=page.window_max_height,
     )
 
-    header = MyAppBar("PRÓXIMAS CITAS", icons.MENU, "")
+    header = MyAppBar("PRÓXIMAS CITAS", icons.MENU, "", page)
     user_bar = MyUserBar(page, f"{obtenerDatos()['Nomb']} {obtenerDatos()['Apel1']} {obtenerDatos()['Apel2']}")
-    navigation_bar = MyNavigationBar(page, 0)
 
     page.title = "Próximas citas"
     theme = Theme()
-    theme.page_transitions.android = PageTransitionTheme.ZOOM
-    theme.page_transitions.ios = PageTransitionTheme.ZOOM
-    theme.page_transitions.macos = PageTransitionTheme.ZOOM
-    theme.page_transitions.linux = PageTransitionTheme.ZOOM
-    theme.page_transitions.windows = PageTransitionTheme.ZOOM
+    theme.page_transitions.android = PageTransitionTheme.NONE
+    theme.page_transitions.ios = PageTransitionTheme.NONE
+    theme.page_transitions.macos = PageTransitionTheme.NONE
+    theme.page_transitions.linux = PageTransitionTheme.NONE
+    theme.page_transitions.windows = PageTransitionTheme.NONE
     page.theme = theme
     print("Ruta login:", page.route)
 
-    return View(
-        '/home',
-        [
-            header.build(),
-            user_bar.build(),
-            stack,
-            navigation_bar.build()
-        ],
-        padding=0,
-        spacing=0
-    )
+    return BaseView(page, [header.build(), user_bar.build(), stack, ], '/home', 0)

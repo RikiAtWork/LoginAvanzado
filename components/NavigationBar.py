@@ -2,37 +2,36 @@ from flet import *
 
 
 class MyNavigationBar(UserControl):
+
     def __init__(self, page, index):
         super().__init__()
         self.page = page
         self.selected_index = index
 
-    def change_page(self, e, page):
-        print(page.route)
-        print(e.control.selected_index)
+    def change_page(self, index):
+        print(index)
 
-        # self.selected_index = e.control.selected_index
+        if index == 0:
+            self.page.go("/home")
+        if index == 1:
+            self.page.go("/nueva_cita")
+        if index == 2:
+            self.page.go("/historico")
 
-        if e.control.selected_index == 0:
-            page.go("/home")
-        if e.control.selected_index == 1:
-            page.go("/nueva_cita")
-        if e.control.selected_index == 2:
-            page.go("/historico")
-
-        page.update()
+        # page.update()
 
     def build(self):
+        # print(f"Indice del Nav Bottom: {self.selected_index}")
         navigation_bar = NavigationBar(
             bgcolor="#2a68f7",
             shadow_color=colors.DEEP_PURPLE,
             selected_index=self.selected_index,
             indicator_color="#2251bf",
-            on_change=lambda e: self.change_page(e, self.page),
+            on_change=lambda e: self.change_page(e.control.selected_index),
             destinations=[
-                NavigationDestination(icon=icons.CALENDAR_MONTH, label="Citas pendientes"),
-                NavigationDestination(icon=icons.ADD, label="Nueva cita"),
-                NavigationDestination(icon=icons.LIST, label="Histórico de citas"),
+                NavigationDestination(icon_content=Icon(icons.CALENDAR_MONTH, color=colors.WHITE), label="Citas pendientes"),
+                NavigationDestination(icon_content=Icon(icons.ADD, color=colors.WHITE), label="Nueva cita"),
+                NavigationDestination(icon_content=Icon(icons.LIST, color=colors.WHITE), label="Histórico de citas"),
 
             ]
         )
