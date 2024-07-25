@@ -117,7 +117,7 @@ def Login(page: Page, params: Params, basket: Basket):
                             margin=margin.only(top=100, bottom=50),
                             content=Image(
                                 src='./assets/logo.png',
-                                width=150,
+                                width=240,
 
                             )
                         )
