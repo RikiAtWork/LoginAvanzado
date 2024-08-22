@@ -1,239 +1,157 @@
-import datetime
 from flet import *
 from flet_route import Params, Basket
+from components.Colors import Colors
+from components.FormFields import FormTextField, TextButtonContainer, Spacer, DateButton, CheckBox, ButtonAction
+
+
+class RegistroPage:
+    def __init__(self, page: Page):
+        self.page = page
+
+        self.dni_field = FormTextField("DNI / NIF / Pasaporte", "", icons.PERSON, False, False)
+        self.telefono_field = FormTextField("Teléfono móvil (9 dígitos)", "", icons.PHONE, False, False)
+        self.password_field = FormTextField("Contraseña", "", icons.LOCK, True, True)
+        self.repeat_password_field = FormTextField("Repita contraseña", "", icons.LOCK, True, True)
+        self.date_picker_field = DateButton(self.page, 50)
+        self.condiciones_field = CheckBox("He leído", Colors.BLACK, "w600", False)
+
+        self.register_button = ButtonAction("SOLICITAR REGISTRO", 50, self.on_registro_click)
+
+        self.create_register_content()
+        self.setup_page()
+    
+    # Se implementará en adelante
+    def register_api(self, dni, telefono, password):
+        pass
+
+    def on_registro_click(self, e):
+        print("DNI / NIF / Pasaporte:", self.dni_field.value)
+        print("Teléfono móvil:", self.telefono_field.value)
+        print("Contraseña:", self.password_field.value)
+        print("Repita contraseña:", self.repeat_password_field.value)
+        print("Fecha de nacimiento:", self.date_picker_field.value)
+        print("¿Ha aceptado condiciones legales?", self.condiciones_field.value)
+
+        # Navegar a otra ruta (por ejemplo, '/')
+        self.page.go('/')
+
+    def create_register_content(self):
+        self.register_content = Container(
+            content=Column(
+                controls=[
+                    ResponsiveRow(
+                        controls=[
+                            Container(
+                                margin=margin.only(bottom=20),
+                                content=Image(src='./assets/logo.png'),
+                                col={"sm": 10, "md": 10, "lg": 4}
+                            ),
+                        ],
+                        alignment=MainAxisAlignment.CENTER,
+                        vertical_alignment=CrossAxisAlignment.CENTER
+                    ),
+                    ResponsiveRow(
+                        controls=[Container(content=self.dni_field, col={"sm": 10, "md": 10, "lg": 4})],
+                        alignment=MainAxisAlignment.CENTER
+                    ),
+                    ResponsiveRow(
+                        controls=[Container(content=self.telefono_field, col={"sm": 10, "md": 10, "lg": 4})],
+                        alignment=MainAxisAlignment.CENTER
+                    ),
+                    ResponsiveRow(
+                        controls=[Container(content=self.password_field, col={"sm": 10, "md": 10, "lg": 4})],
+                        alignment=MainAxisAlignment.CENTER
+                    ),
+                    ResponsiveRow(
+                        controls=[Container(content=self.repeat_password_field, col={"sm": 10, "md": 10, "lg": 4})],
+                        alignment=MainAxisAlignment.CENTER
+                    ),
+                    ResponsiveRow(
+                        controls=[Container(content=self.date_picker_field, col={"sm": 10, "md": 10, "lg": 4})],
+                        alignment=MainAxisAlignment.CENTER
+                    ),
+                    Spacer(10),
+                    ResponsiveRow(
+                        controls=[Container(
+                                    content=Text(
+                                        "App sólo para pacientes de Clínica Atenea",
+                                        size=12,
+                                        style=TextStyle(color=colors.BLACK,
+                                                        italic=True,
+                                                        ),
+                                    ),
+                                    alignment=alignment.center,
+                                    col={"sm": 10, "md": 10, "lg": 4} 
+                                )
+                                ],
+                                alignment=MainAxisAlignment.CENTER
+                    ),
+                    Spacer(10),
+                    ResponsiveRow(
+                        controls=[Container(
+                                content=self.register_button,
+                                col={"sm": 10, "md": 10, "lg": 4}
+                            )
+                        ],
+                        alignment=MainAxisAlignment.CENTER
+                    ),
+                    ResponsiveRow(
+                        controls=[
+                            Container(
+                                content=Row(
+                                    controls=[
+                                        self.condiciones_field,
+                                        TextButtonContainer(
+                                            'las condiciones legales',
+                                            lambda _: self.page.go('/registro'),
+                                            14,
+                                            colors.BLUE_ACCENT_400,
+                                            TextDecoration.NONE,
+                                            -15
+                                        )
+                                    ],
+                                    alignment=MainAxisAlignment.CENTER
+                                ),
+                                col={"sm": 10, "md": 10, "lg": 4}
+                            )
+                        ],
+                        alignment=MainAxisAlignment.CENTER
+                    )
+                ],
+                alignment=MainAxisAlignment.CENTER,
+                horizontal_alignment=CrossAxisAlignment.CENTER,
+            ),
+            padding=padding.all(20),
+            expand=True,
+            image_src='./assets/background.png',
+            image_fit=ImageFit.COVER,
+            # gradient=LinearGradient(
+            #     begin=alignment.top_center,
+            #     end=alignment.bottom_center,
+            #     colors=[Colors.PURPLE, Colors.AFFIDEA, Colors.WHITE_BLUE],
+            #     stops=[0.2, 0.6, 1.0]
+            # ),
+        )
+
+    def setup_page(self):
+        self.main = SafeArea(
+            content=self.register_content,
+            expand=True
+        )
+
+        self.page.title = "Registrarse"
+        self.page.theme = Theme(color_scheme_seed="blue")
+
+        print("Ruta:", self.page.route)
+
+    def get_view(self):
+        return View(
+            '/registro',
+            [self.main],
+            padding=0
+        )
 
 
 def Registro(page: Page, params: Params, basket: Basket):
-    def cambia_fecha(e):
-        print(f"La fecha ha cambiado, su valor es {date_picker.value}")
-
-    def fallo_data_picker(e):
-        print(f"No ha seleccionado fecha, valor es {date_picker.value}")
-
-    date_picker = DatePicker(
-        on_change=cambia_fecha,
-        on_dismiss=fallo_data_picker,
-        first_date=datetime.datetime(2023, 10, 1),
-        last_date=datetime.datetime(2024, 10, 1),
-
-    )
-
-    fecha_formateada = datetime.datetime.now().strftime("%d/%m/%Y")
-
-    page.overlay.append(date_picker)
-
-    date_button = ElevatedButton(
-        f"{fecha_formateada}",
-        icon=icons.CALENDAR_MONTH,
-        on_click=lambda _: date_picker.pick_date(),
-        width=page.window_width * 0.6,
-        style=ButtonStyle(
-            bgcolor=colors.TRANSPARENT,
-            color=colors.WHITE,
-            side={
-                MaterialState.DEFAULT: BorderSide(1, colors.WHITE),
-            },
-            shape={
-                MaterialState.DEFAULT: RoundedRectangleBorder(radius=10),
-            }
-        )
-    )
-
-    registro = Container(
-        width=page.window_width,
-        height=page.window_height,
-        gradient=LinearGradient(
-            begin=alignment.top_center,
-            end=alignment.bottom_center,
-            colors=["#5d7ae5", "#428aed", "#f0f2fc"],
-        ),
-        content=Column(
-            controls=[
-                Row(
-                    [
-                        Container(
-                            margin=margin.only(top=100),
-                            content=Image(
-                                src='assets/atenea.png',
-                                width=50,
-                            )
-                        ),
-
-                    ],
-                    alignment=MainAxisAlignment.CENTER,
-                    vertical_alignment=CrossAxisAlignment.CENTER
-                ),
-                Row(
-                    [
-                        Container(
-                            margin=margin.only(bottom=50),
-                            content=Text(
-                                "REGISTRO",
-                                style=TextStyle(
-                                    size=20,
-                                    weight=FontWeight.BOLD,
-                                    color=colors.WHITE
-                                )
-                            )
-                        ),
-
-                    ],
-                    alignment=MainAxisAlignment.CENTER,
-                    vertical_alignment=CrossAxisAlignment.CENTER
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            TextField(
-                                width=page.window_width * 0.6,
-                                hint_text="DNI / NIF / Pasaporte",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
-                                height=40,
-                                border_color=colors.WHITE,
-                                border_radius=10,
-                                prefix_icon=icons.PERSON,
-                            ),
-
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            TextField(
-                                width=page.window_width * 0.6,
-                                hint_text="Teléfono móvil (9 digitos)",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
-                                height=40,
-                                border_color=colors.WHITE,
-                                border_radius=10,
-                                prefix_icon=icons.PHONE,
-                            )
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            TextField(
-                                width=page.window_width * 0.6,
-                                hint_text="Contraseña",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
-                                height=40,
-                                border_color=colors.WHITE,
-                                border_radius=10,
-                                prefix_icon=icons.LOCK,
-                                password=True,
-                                can_reveal_password=True
-                            )
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            TextField(
-                                width=page.window_width * 0.6,
-                                hint_text="Repita contraseña",
-                                hint_style=TextStyle(color=colors.WHITE, weight=FontWeight.NORMAL, size=14),
-                                height=40,
-                                border_color=colors.WHITE,
-                                border_radius=10,
-                                prefix_icon=icons.LOCK,
-                                password=True,
-                                can_reveal_password=True
-                            )
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            date_button,
-                            margin=margin.only(bottom=5)
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            Text(
-                                "App sólo para pacientes de Clínica Atenea",
-                                size=12,
-                                style=TextStyle(color=colors.BLACK,
-                                                italic=True,
-                                                ),
-
-                            )
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            margin=margin.only(top=50),
-                            content=ElevatedButton("SOLICITAR REGISTRO",
-                                                   width=page.window_width * 0.6,
-                                                   on_click=lambda _: page.go('/'),
-                                                   bgcolor=colors.RED_600,
-                                                   color=colors.WHITE,
-                                                   style=ButtonStyle(
-                                                       shape={
-                                                           MaterialState.DEFAULT: RoundedRectangleBorder(radius=10),
-                                                       }
-                                                   )
-                                                   ),
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-                ),
-                Row(
-                    controls=[
-                        Container(
-                            margin=margin.only(top=10),
-                            content=Checkbox("He leído ",
-                                             value=False,
-                                             active_color=colors.LIGHT_BLUE,
-                                             label_style=TextStyle(color=colors.BLACK, weight=FontWeight.NORMAL),
-                                             hover_color=colors.BLUE_ACCENT_700,
-                                             )
-                                             
-                        ), Container(
-                            margin=margin.only(left=-10, top=10),
-                            content=Text("las condiciones legales",
-                                         color=colors.BLUE_ACCENT_400,
-                                         style=TextStyle(weight=FontWeight.W_600)
-                                         )
-                        )
-                    ],
-                    alignment=MainAxisAlignment.CENTER
-                ),
-            ],
-        )
-    )
-
-    page.title = "Registrarse"
-    page.theme = Theme(color_scheme_seed="blue")
-    theme = Theme()
-    theme.page_transitions.android = PageTransitionTheme.ZOOM
-    theme.page_transitions.ios = PageTransitionTheme.ZOOM
-    theme.page_transitions.macos = PageTransitionTheme.ZOOM
-    theme.page_transitions.linux = PageTransitionTheme.ZOOM
-    theme.page_transitions.windows = PageTransitionTheme.ZOOM
-    page.theme = theme
-    print("Ruta login:", page.route)
-
-    return View(
-        '/registro',
-        [
-            registro
-        ],
-        padding=0
-    )
+    register_page = RegistroPage(page)
+    return register_page.get_view()

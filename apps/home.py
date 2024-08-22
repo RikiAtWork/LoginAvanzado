@@ -26,8 +26,8 @@ class Styles:
 
 
 def Home(page: Page, params: Params, basket: Basket):
-    def obtenerDatos():
-        datos = page.client_storage.get("data")
+    async def obtenerDatos():
+        datos = await page.client_storage.get_async("data")
         return datos['Data']
 
     def obtenerCitas():
